@@ -14,11 +14,8 @@ try:
 
     text = ""
 
-    code = pdfReader.getDocumentInfo()
-    name_doc = FILE_SOURCE[0:FILE_SOURCE.index(".")]
-
-    print(code)
-
+    print(pdfReader.getPage(0).extractText())
+    print(pdfReader.numPages)
     common.say(f"Hello, this is the audio version of your" \
     + " pdf file and I am Mister Frank and Miss Frankie will be reciting your document")
     common.runAndWait()
@@ -28,10 +25,10 @@ try:
 
 
     if total_pages <= 25:
-        for i in range(0, total_pages - 20):
+        for i in range(0, total_pages):
             text += pdfReader.getPage(i).extractText()
         
-        print(Fore.BLUE + "Converting to mp3..." + Fore.YELLOW +" This may take a while depending upon your file size ." + Fore.RESET)
+        print(Fore.GREEN + "Converting to mp3 ..." + Fore.YELLOW +" This may take a while depending on your file size." + Fore.RESET)
         gTTS(text, lang='en', slow=False).save("file.mp3")
         common.say("Your pdf has successfully been converted to mp3.")
         common.runAndWait()
@@ -41,5 +38,5 @@ try:
         common.runAndWait()
 
 except IOError:
-    common.say("File not found")
+    common.say("File not found. Try again with a valid file.")
     common.runAndWait()
