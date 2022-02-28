@@ -1,9 +1,10 @@
 from PyPDF2 import PdfFileReader
 from gtts import gTTS
 import pyttsx3
+from colorama import Fore
 
 common = pyttsx3.init()
-common.setProperty("rate",150)
+common.setProperty("rate",155)
 
 FILE_SOURCE = input("Location of your pdf file: ")
 #FILE_DESTINATION = input("Where do you want to store the file?\n>")
@@ -19,7 +20,7 @@ try:
     print(code)
 
     common.say(f"Hello, this is the audio version of your" \
-    + " pdf and I am Mister Frank and Miss Frankie will be reciting your document")
+    + " pdf file and I am Mister Frank and Miss Frankie will be reciting your document")
     common.runAndWait()
         
 
@@ -27,13 +28,14 @@ try:
 
 
     if total_pages <= 25:
-        for i in range(0, total_pages):
+        for i in range(0, total_pages - 20):
             text += pdfReader.getPage(i).extractText()
         
-        print("Converting to mp3.. This may take a while depending upon your file size.")
-        gTTS(text, lang='en').save("file.mp3")
-        common.say("Your pdf has successfully been converted to mp3 and has been saved.")
+        print(Fore.BLUE + "Converting to mp3..." + Fore.YELLOW +" This may take a while depending upon your file size ." + Fore.RESET)
+        gTTS(text, lang='en', slow=False).save("file.mp3")
+        common.say("Your pdf has successfully been converted to mp3.")
         common.runAndWait()
+
     else:
         common.say("Your pdf file contains too many pages.")
         common.runAndWait()
@@ -41,5 +43,3 @@ try:
 except IOError:
     common.say("File not found")
     common.runAndWait()
-
-
